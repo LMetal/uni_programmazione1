@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+// struttura e typedef
+struct nodo{
+  int dato;
+
+  struct nodo * next;
+};
+
+typedef struct nodo Node;
+typedef struct nodo * Link;
+
+
+// prototipi
+Link crea_lista(int n_nodi);
+void stampa_lista(Link nodo);
+int massimo_lista(Link nodo);
+int minimo_lista(Link nodo);
+int max(int n1, int n2);
+int min(int n1, int n2);
+
+
+int main(int argc, char *argv[]){
+  srand((unsigned)time(NULL));
+
+  Link list = NULL;
+
+  if(argc != 2){
+    printf("\nERRORE INSERIMENTO PARAMETRI\n\n");
+    return 1;
+  }
+
+
+  list = crea_lista(atoi(argv[1]));
+
+  stampa_lista(list);
+
+  printf("\nMassimo valore lista : %d\n\n", massimo_lista(list));
+  printf("\nMinimo valore lista : %d\n\n", minimo_lista(list));
+
+  return 0;
+}
+
+
+Link crea_lista(int n_nodi){
+  Link head = NULL;
+  Link tail = NULL;
+  Link temp = NULL;
+
+  int i;
+
+
+  for(i=0; i<n_nodi; i++){
+    temp = malloc(sizeof(Node));
+
+    if(i == 0){
+      head = temp;
+      tail = head;
+
+      tail->next = NULL;
+      tail->dato = rand()%20;
+    }
+    else{
+      tail->next = temp;
+
+      tail = tail->next;
+
+      tail->next = NULL;
+      tail->dato = rand()%20;
+    }
+
+  }
+  return head;
+}
+
+
+void stampa_lista(Link nodo){
+  printf("\n\n");
+  while(nodo != NULL){
+    printf("-> %d ", nodo->dato);
+
+    nodo = nodo->next;
+  }
+  printf("\n\n");
+
+}
+
+
+
+int massimo_lista(Link nodo){
+  if(nodo == NULL) return 0;
+
+  else return max(nodo->dato, massimo_lista(nodo->next));
+}
+
+int minimo_lista(Link nodo){
+  if(nodo == NULL) return 20;
+
+  else return min(nodo->dato, minimo_lista(nodo->next));
+}
+
+
+int max(int n1, int n2){
+  if(n1 > n2) return n1;
+  else return n2;
+}
+
+int min(int n1, int n2){
+  if(n1 > n2) return n2;
+  else return n1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EOF
